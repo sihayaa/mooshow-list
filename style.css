@@ -47,7 +47,7 @@ h1:hover{
     animation-play-state:paused;
 }
 
-/* ombré text (blue → teal → green → yellow) on the words only, so emojis keep their own colours */
+
 h1 .grad{
     background:linear-gradient(90deg,#4DA3FF 0%,#19D3C5 35%,#4ADE80 68%,#FACC15 100%);
     -webkit-background-clip:text;
@@ -59,7 +59,7 @@ h1 .grad{
     box-decoration-break:clone;
 }
 
-/* ---------- Toolbar ---------- */
+
 
 .toolbar{
     position:relative;
@@ -117,7 +117,7 @@ input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button{ -webkit-appearance:none; margin:0; }
 input[type="number"]{ -moz-appearance:textfield; appearance:textfield; }
 
-/* ---------- Genre picker ---------- */
+
 
 .genre-select-wrapper{ position:relative; }
 
@@ -187,7 +187,7 @@ input[type="number"]{ -moz-appearance:textfield; appearance:textfield; }
     font-weight:600;
 }
 
-/* ---------- Filter popup ---------- */
+
 
 .filter-wrapper{ position:relative; flex-shrink:0; }
 
@@ -238,7 +238,7 @@ input[type="number"]{ -moz-appearance:textfield; appearance:textfield; }
 .filter-panel .field,
 .filter-panel select{ width:100%; }
 
-/* ---------- Buttons ---------- */
+
 
 button{
     background:#A768FF;
@@ -300,7 +300,33 @@ button:hover{
 .delete-btn{ background:#181818; border:1px solid rgba(255,90,130,.25); color:#FF7F9E; }
 .delete-btn:hover{ background:#4A1524; border-color:#FF5C8A; color:#fff; }
 
-/* ---------- Grid & cards ---------- */
+
+
+.category-tabs{ display:flex; gap:8px; flex-wrap:wrap; }
+
+.category-tab{
+    background:rgba(167,104,255,.18);
+    border:1px solid rgba(167,104,255,.5);
+    color:#E6D6FF;
+    padding:10px 16px;
+    white-space:nowrap;
+}
+.category-tab:hover{
+    background:rgba(167,104,255,.35);
+}
+.category-tab.active{
+    background:#A768FF;
+    border-color:#A768FF;
+    color:#fff;
+    box-shadow:0 0 12px rgba(182,108,255,.35);
+}
+
+@media(max-width:900px){
+    .category-tabs{ width:100%; }
+    .category-tab{ flex:1; width:auto; padding:10px 8px; }
+}
+
+
 
 .grid{
     display:grid;
@@ -443,7 +469,7 @@ button:hover{
 }
 .card.completing{ animation:completePulse .55s ease; }
 
-/* Genre badge colours */
+
 .badge-genre-action{ color:#FF8080; border-color:rgba(255,128,128,.4); }
 .badge-genre-adventure{ color:#FFB86B; border-color:rgba(255,184,107,.4); }
 .badge-genre-animation{ color:#6BCBFF; border-color:rgba(107,203,255,.4); }
@@ -457,7 +483,7 @@ button:hover{
 .badge-genre-sci-fi{ color:#5FE39A; border-color:rgba(95,227,154,.4); }
 .badge-genre-thriller{ color:#FFB454; border-color:rgba(255,180,84,.4); }
 
-/* ---------- Modals ---------- */
+
 
 .modal{
     display:none;
@@ -509,7 +535,7 @@ button:hover{
 #deleteNo{ background:#444; color:#fff; }
 #deleteYes{ background:#c43b3b; color:#fff; }
 
-/* Details modal */
+
 .details-content{ width:480px; max-width:90%; padding:0; overflow:hidden; position:relative; }
 
 .details-content #closeDetails{
@@ -537,7 +563,6 @@ button:hover{
 .details-meta{ color:#46C37B; font-size:12px; text-align:left; margin-bottom:12px; }
 .details-body #detailsOverview{ color:#D5D5D5; font-size:14px; line-height:1.6; text-align:left; }
 
-/* ---------- Title search dropdown ---------- */
 
 .title-search{ position:relative; z-index:1001; }
 
@@ -557,7 +582,6 @@ button:hover{
 .search-item h4{ margin:0; color:#fff; font-size:14px; }
 .search-item p{ margin-top:4px; color:#9A9A9A; font-size:12px; }
 
-/* ---------- Fireflies & confetti ---------- */
 
 .firefly{
     position:fixed;
@@ -595,7 +619,6 @@ button:hover{
     100%{ transform:translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(1); opacity:0; }
 }
 
-/* ---------- Responsive ---------- */
 
 @media(max-width:900px){
     .toolbar-row, .search-row{ flex-direction:column; align-items:stretch; }
