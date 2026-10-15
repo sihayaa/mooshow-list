@@ -302,7 +302,6 @@ button:hover{
     border:1px solid rgba(255,255,255,.05);
     border-radius:20px;
     padding:18px 14px 14px;
-    aspect-ratio:1/1;
     display:flex;
     flex-direction:column;
     overflow:hidden;
@@ -348,7 +347,6 @@ button:hover{
     width:56%;
     aspect-ratio:2/3;
     height:auto;
-    max-height:46%;
     object-fit:cover;
     border-radius:12px;
     flex-shrink:0;
@@ -377,9 +375,11 @@ button:hover{
     font-size:20px;
     margin-bottom:6px;
     text-align:center;
-    white-space:nowrap;
+    line-height:1.2;
     overflow:hidden;
-    text-overflow:ellipsis;
+    display:-webkit-box;
+    -webkit-line-clamp:2;
+    -webkit-box-orient:vertical;
     text-shadow:0 0 6px rgba(182,108,255,.35);
 }
 
@@ -406,10 +406,6 @@ button:hover{
     line-height:1.45;
     font-size:12px;
     text-align:center;
-    overflow:hidden;
-    display:-webkit-box;
-    -webkit-line-clamp:3;
-    -webkit-box-orient:vertical;
 }
 
 .complete{
