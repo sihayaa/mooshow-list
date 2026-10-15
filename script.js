@@ -56,7 +56,6 @@ function spawnFireflies(count = 18) {
 spawnFireflies();
 
 
-
 const type = document.getElementById("type");
 const title = document.getElementById("title");
 const season = document.getElementById("season");
@@ -166,7 +165,7 @@ async function searchTMDB(query) {
         return;
     }
 
-
+ 
     if (title.value.trim() !== query) return;
 
     searchResults.innerHTML = "";
@@ -203,7 +202,7 @@ async function searchTMDB(query) {
             title.value = item.title || item.name;
             type.value = detectType(item);
 
-     
+            
             const names = [...new Set((item.genre_ids || []).flatMap(id => TMDB_GENRES[id] || []))];
             setGenres(names);
 
@@ -252,6 +251,19 @@ function updateFilterDot() {
 
 filterGenre.addEventListener("change", () => { updateFilterDot(); loadWatchlist(); });
 sortBy.addEventListener("change", () => { updateFilterDot(); loadWatchlist(); });
+
+
+let activeType = ""; 
+
+document.querySelectorAll(".category-tab").forEach(tab => {
+    tab.addEventListener("click", () => {
+        activeType = tab.dataset.type;
+        document.querySelectorAll(".category-tab").forEach(t =>
+            t.classList.toggle("active", t === tab)
+        );
+        loadWatchlist();
+    });
+});
 
 
 
@@ -321,6 +333,12 @@ async function loadWatchlist() {
 
     if (filterGenre.value) {
         query = query.ilike("genre", `%${filterGenre.value}%`);
+    }
+
+    if (activeType === "Movie") {
+        query = query.eq("type", "Movie");
+    } else if (activeType === "Show") {
+        query = query.in("type", ["Series", "Anime"]);
     }
 
     if (sortBy.value === "title") {
@@ -394,7 +412,6 @@ function renderCard(item, index) {
         setTimeout(loadWatchlist, 500);
     });
 
-    
     card.querySelector(".delete-btn").addEventListener("click", () => {
 
         const modal = document.getElementById("deleteModal");
@@ -410,7 +427,6 @@ function renderCard(item, index) {
             loadWatchlist();
         };
     });
-
 
     const editBtn = card.querySelector(".edit-btn");
     if (editBtn) {
@@ -440,7 +456,6 @@ function renderCard(item, index) {
         });
     }
 
-   
     [card.querySelector(".poster"), card.querySelector("h3")].forEach(el => {
         el.style.cursor = "pointer";
         el.addEventListener("click", () => openDetailsModal(item));
@@ -465,7 +480,7 @@ async function addItem() {
         return;
     }
 
- 
+   
     const match = selectedTMDB;
 
     if (!match) {
@@ -516,8 +531,7 @@ addBtn.addEventListener("click", addItem);
 const WATCHED_TITLE = pageTitle.textContent;
 const WATCHED_BTN = historyBtn.textContent;
 const WATCHLIST_TITLE = "To Watch or Not to Watch 👀";
-const WATCHLIST_BTN = "← Back to Watched ";
-
+const WATCHLIST_BTN = "← Back to Binged 🎞️";
 
 function setHeading(text) {
     const m = text.match(/^(.*?)([\s\p{Extended_Pictographic}\uFE0F\u200D]*)$/u);
@@ -534,7 +548,6 @@ historyBtn.addEventListener("click", () => {
 
     loadWatchlist();
 });
-
 
 
 function applyTitleSearch() {
