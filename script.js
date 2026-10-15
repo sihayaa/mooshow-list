@@ -3,6 +3,7 @@ const TMDB_IMAGE = "https://image.tmdb.org/t/p/w500";
 const TABLE = "watched_list";
 const NO_POSTER = "https://placehold.co/300x450?text=No+Poster";
 
+
 const TMDB_GENRES = {
     28: ["Action"], 12: ["Adventure"], 16: ["Animation"], 35: ["Comedy"],
     80: ["Crime"], 18: ["Drama"], 14: ["Fantasy"], 27: ["Horror"],
@@ -202,7 +203,7 @@ async function searchTMDB(query) {
             title.value = item.title || item.name;
             type.value = detectType(item);
 
-       
+     
             const names = [...new Set((item.genre_ids || []).flatMap(id => TMDB_GENRES[id] || []))];
             setGenres(names);
 
@@ -393,7 +394,7 @@ function renderCard(item, index) {
         setTimeout(loadWatchlist, 500);
     });
 
-  
+    
     card.querySelector(".delete-btn").addEventListener("click", () => {
 
         const modal = document.getElementById("deleteModal");
@@ -410,7 +411,7 @@ function renderCard(item, index) {
         };
     });
 
-  
+
     const editBtn = card.querySelector(".edit-btn");
     if (editBtn) {
         editBtn.addEventListener("click", () => {
@@ -439,7 +440,7 @@ function renderCard(item, index) {
         });
     }
 
-
+   
     [card.querySelector(".poster"), card.querySelector("h3")].forEach(el => {
         el.style.cursor = "pointer";
         el.addEventListener("click", () => openDetailsModal(item));
@@ -464,7 +465,7 @@ async function addItem() {
         return;
     }
 
-
+ 
     const match = selectedTMDB;
 
     if (!match) {
@@ -514,18 +515,26 @@ addBtn.addEventListener("click", addItem);
 
 const WATCHED_TITLE = pageTitle.textContent;
 const WATCHED_BTN = historyBtn.textContent;
-const WATCHLIST_TITLE = "To Watch or Not to Watch 👀";
-const WATCHLIST_BTN = "← Back to Binged 🎞️";
+const WATCHLIST_TITLE = "Binge?";
+const WATCHLIST_BTN = "← Back to Watched ";
+
+
+function setHeading(text) {
+    const m = text.match(/^(.*?)([\s\p{Extended_Pictographic}\uFE0F\u200D]*)$/u);
+    pageTitle.innerHTML = `<span class="grad">${esc(m[1])}</span>${esc(m[2])}`;
+}
+setHeading(WATCHED_TITLE);
 
 historyBtn.addEventListener("click", () => {
 
     showingWatchlist = !showingWatchlist;
 
     historyBtn.textContent = showingWatchlist ? WATCHLIST_BTN : WATCHED_BTN;
-    pageTitle.textContent = showingWatchlist ? WATCHLIST_TITLE : WATCHED_TITLE;
+    setHeading(showingWatchlist ? WATCHLIST_TITLE : WATCHED_TITLE);
 
     loadWatchlist();
 });
+
 
 
 function applyTitleSearch() {
