@@ -515,7 +515,7 @@ addBtn.addEventListener("click", addItem);
 
 const WATCHED_TITLE = pageTitle.textContent;
 const WATCHED_BTN = historyBtn.textContent;
-const WATCHLIST_TITLE = "Binge?";
+const WATCHLIST_TITLE = "To Watch or Not to Watch 👀";
 const WATCHLIST_BTN = "← Back to Watched ";
 
 
