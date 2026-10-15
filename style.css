@@ -4,7 +4,7 @@
 
 body{
     background:
-        linear-gradient(rgba(9,9,9,.4), rgba(9,9,9,.6)),
+        linear-gradient(rgba(9,9,9,.15), rgba(9,9,9,.3)),
         url('cozzz.png');
     background-size:cover;
     background-position:center;
@@ -310,9 +310,9 @@ button:hover{
 
 .card{
     position:relative;
-    background:rgba(18,18,18,.40);
-    backdrop-filter:blur(12px);
-    -webkit-backdrop-filter:blur(12px);
+    background:rgba(18,18,18,.45);
+    backdrop-filter:blur(4px);
+    -webkit-backdrop-filter:blur(4px);
     border:1px solid rgba(255,255,255,.05);
     border-radius:20px;
     padding:18px 14px 14px;
