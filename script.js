@@ -128,7 +128,7 @@ async function searchTMDB(query) {
         return;
     }
 
-  
+
     if (title.value.trim() !== query) return;
 
     searchResults.innerHTML = "";
@@ -165,7 +165,6 @@ async function searchTMDB(query) {
             title.value = item.title || item.name;
             type.value = detectType(item);
 
-   
             const names = [...new Set((item.genre_ids || []).flatMap(id => TMDB_GENRES[id] || []))];
             setGenres(names);
 
@@ -217,7 +216,7 @@ sortBy.addEventListener("change", () => { updateFilterDot(); loadWatchlist(); })
 
 
 
-let activeType = ""; 
+let activeType = "";
 
 document.querySelectorAll(".category-tab").forEach(tab => {
     tab.addEventListener("click", () => {
@@ -361,7 +360,7 @@ function renderCard(item, index) {
 </div>
 `;
 
- 
+
     const checkbox = card.querySelector(".completedCheck");
     checkbox.addEventListener("change", async function () {
 
@@ -373,7 +372,7 @@ function renderCard(item, index) {
         loadWatchlist();
     });
 
- 
+
     card.querySelector(".delete-btn").addEventListener("click", () => {
 
         const modal = document.getElementById("deleteModal");
@@ -389,7 +388,6 @@ function renderCard(item, index) {
             loadWatchlist();
         };
     });
-
 
     const editBtn = card.querySelector(".edit-btn");
     if (editBtn) {
@@ -429,7 +427,6 @@ function renderCard(item, index) {
 }
 
 
-
 async function addItem() {
 
     const name = title.value.trim();
@@ -444,7 +441,7 @@ async function addItem() {
         return;
     }
 
-  
+
     const match = selectedTMDB;
 
     if (!match) {
@@ -492,9 +489,9 @@ async function addItem() {
 addBtn.addEventListener("click", addItem);
 
 
-const WATCHLIST_TITLE = "To Watch or Not to Watch 👀";  
-const WATCHLIST_BTN = "We Binged →";   
-const WATCHED_TITLE = "We Came, We Saw, We Binged🎞️";    
+const WATCHLIST_TITLE = "To Watch or Not to Watch 👀";   
+const WATCHLIST_BTN = "We Binged →";    
+const WATCHED_TITLE = "We Came, We Saw, We Binged🎞️";   
 const WATCHED_BTN = "← To Watch";     
 
 
@@ -508,6 +505,9 @@ historyBtn.textContent = WATCHLIST_BTN;
 historyBtn.addEventListener("click", () => {
 
     showingWatchlist = !showingWatchlist;
+
+
+    document.body.classList.toggle("page-watched", !showingWatchlist);
 
     historyBtn.textContent = showingWatchlist ? WATCHLIST_BTN : WATCHED_BTN;
     setHeading(showingWatchlist ? WATCHLIST_TITLE : WATCHED_TITLE);
