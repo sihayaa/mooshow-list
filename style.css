@@ -28,26 +28,11 @@ h1{
     color:#4ADE80;
     line-height:1.25;
     letter-spacing:.5px;
-    filter:drop-shadow(0 0 6px rgba(25,211,197,.45));
     display:inline-block;
     cursor:default;
-    transition:transform .35s ease, filter .35s ease, letter-spacing .35s ease;
-    animation:titleBreathe 4s ease-in-out infinite;
 }
 
-@keyframes titleBreathe{
-    0%,100%{ filter:drop-shadow(0 0 5px rgba(25,211,197,.4)); }
-    50%{ filter:drop-shadow(0 0 12px rgba(74,222,128,.65)); }
-}
-
-h1:hover{
-    transform:scale(1.05) rotate(-1deg);
-    letter-spacing:1.5px;
-    filter:drop-shadow(0 0 16px rgba(250,204,21,.7));
-    animation-play-state:paused;
-}
-
-
+/* ombré text (blue → teal → green → yellow) on the words only, so emojis keep their own colours */
 h1 .grad{
     background:linear-gradient(90deg,#4DA3FF 0%,#19D3C5 35%,#4ADE80 68%,#FACC15 100%);
     -webkit-background-clip:text;
@@ -59,7 +44,7 @@ h1 .grad{
     box-decoration-break:clone;
 }
 
-
+/* ---------- Toolbar ---------- */
 
 .toolbar{
     position:relative;
@@ -117,7 +102,7 @@ input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button{ -webkit-appearance:none; margin:0; }
 input[type="number"]{ -moz-appearance:textfield; appearance:textfield; }
 
-
+/* ---------- Genre picker ---------- */
 
 .genre-select-wrapper{ position:relative; }
 
@@ -187,7 +172,7 @@ input[type="number"]{ -moz-appearance:textfield; appearance:textfield; }
     font-weight:600;
 }
 
-
+/* ---------- Filter popup ---------- */
 
 .filter-wrapper{ position:relative; flex-shrink:0; }
 
@@ -207,7 +192,6 @@ input[type="number"]{ -moz-appearance:textfield; appearance:textfield; }
 .filter-btn:hover{
     background:#171717;
     border-color:#A768FF;
-    box-shadow:0 0 12px rgba(182,108,255,.22);
     transform:translateY(-2px);
 }
 
@@ -238,7 +222,7 @@ input[type="number"]{ -moz-appearance:textfield; appearance:textfield; }
 .filter-panel .field,
 .filter-panel select{ width:100%; }
 
-
+/* ---------- Buttons ---------- */
 
 button{
     background:#A768FF;
@@ -254,7 +238,6 @@ button{
 button:hover{
     transform:translateY(-2px);
     background:#B67BFF;
-    box-shadow:0 0 12px rgba(182,108,255,.22);
 }
 
 .history-btn{
@@ -268,7 +251,6 @@ button:hover{
 .history-btn:hover{
     background:linear-gradient(90deg,#4DA3FF 0%,#19D3C5 35%,#4ADE80 68%,#FACC15 100%);
     filter:brightness(1.1);
-    box-shadow:0 0 14px rgba(25,211,197,.4);
     transform:translateY(-2px);
 }
 
@@ -300,7 +282,7 @@ button:hover{
 .delete-btn{ background:#181818; border:1px solid rgba(255,90,130,.25); color:#FF7F9E; }
 .delete-btn:hover{ background:#4A1524; border-color:#FF5C8A; color:#fff; }
 
-
+/* ---------- Category tabs (All / Movies / Series / Anime) ---------- */
 
 .category-tabs{ display:flex; gap:8px; flex-wrap:wrap; }
 
@@ -318,7 +300,6 @@ button:hover{
     background:#A768FF;
     border-color:#A768FF;
     color:#fff;
-    box-shadow:0 0 12px rgba(182,108,255,.35);
 }
 
 @media(max-width:900px){
@@ -326,7 +307,7 @@ button:hover{
     .category-tab{ flex:1; width:auto; padding:10px 8px; }
 }
 
-
+/* ---------- Grid & cards ---------- */
 
 .grid{
     display:grid;
@@ -352,12 +333,11 @@ button:hover{
 .card:hover{
     transform:translateY(-4px);
     border-color:rgba(182,108,255,.45);
-    box-shadow:0 8px 28px rgba(0,0,0,.45), 0 0 18px rgba(182,108,255,.12);
+    box-shadow:0 8px 28px rgba(0,0,0,.45);
 }
 
 .card.completed{
     border-color:#3FA56A;
-    box-shadow:0 0 18px rgba(63,175,106,.16);
 }
 
 @keyframes cardFadeIn{
@@ -392,13 +372,13 @@ button:hover{
     flex-shrink:0;
     background:#111;
     border:1px solid rgba(255,255,255,.08);
-    box-shadow:0 8px 20px rgba(0,0,0,.45), 0 0 10px rgba(182,108,255,.08);
+    box-shadow:0 8px 20px rgba(0,0,0,.45);
     transition:transform .3s ease, box-shadow .3s ease;
 }
 
 .card:hover .poster{
     transform:scale(1.05);
-    box-shadow:0 10px 24px rgba(0,0,0,.5), 0 0 18px rgba(182,108,255,.3);
+    box-shadow:0 10px 24px rgba(0,0,0,.5);
 }
 
 .card-content{
@@ -420,7 +400,6 @@ button:hover{
     display:-webkit-box;
     -webkit-line-clamp:2;
     -webkit-box-orient:vertical;
-    text-shadow:0 0 6px rgba(182,108,255,.35);
 }
 
 .badges{
@@ -462,14 +441,7 @@ button:hover{
     padding-top:8px;
 }
 
-@keyframes completePulse{
-    0%{ box-shadow:0 0 0 rgba(63,175,106,0); }
-    35%{ box-shadow:0 0 32px rgba(63,175,106,.6); transform:translateY(-2px); }
-    100%{ box-shadow:0 0 18px rgba(63,175,106,.16); transform:translateY(0); }
-}
-.card.completing{ animation:completePulse .55s ease; }
-
-
+/* Genre badge colours */
 .badge-genre-action{ color:#FF8080; border-color:rgba(255,128,128,.4); }
 .badge-genre-adventure{ color:#FFB86B; border-color:rgba(255,184,107,.4); }
 .badge-genre-animation{ color:#6BCBFF; border-color:rgba(107,203,255,.4); }
@@ -483,7 +455,7 @@ button:hover{
 .badge-genre-sci-fi{ color:#5FE39A; border-color:rgba(95,227,154,.4); }
 .badge-genre-thriller{ color:#FFB454; border-color:rgba(255,180,84,.4); }
 
-
+/* ---------- Modals ---------- */
 
 .modal{
     display:none;
@@ -535,7 +507,7 @@ button:hover{
 #deleteNo{ background:#444; color:#fff; }
 #deleteYes{ background:#c43b3b; color:#fff; }
 
-
+/* Details modal */
 .details-content{ width:480px; max-width:90%; padding:0; overflow:hidden; position:relative; }
 
 .details-content #closeDetails{
@@ -563,6 +535,7 @@ button:hover{
 .details-meta{ color:#46C37B; font-size:12px; text-align:left; margin-bottom:12px; }
 .details-body #detailsOverview{ color:#D5D5D5; font-size:14px; line-height:1.6; text-align:left; }
 
+/* ---------- Title search dropdown ---------- */
 
 .title-search{ position:relative; z-index:1001; }
 
@@ -582,6 +555,7 @@ button:hover{
 .search-item h4{ margin:0; color:#fff; font-size:14px; }
 .search-item p{ margin-top:4px; color:#9A9A9A; font-size:12px; }
 
+/* ---------- Fireflies & confetti ---------- */
 
 .firefly{
     position:fixed;
@@ -619,6 +593,7 @@ button:hover{
     100%{ transform:translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(1); opacity:0; }
 }
 
+/* ---------- Responsive ---------- */
 
 @media(max-width:900px){
     .toolbar-row, .search-row{ flex-direction:column; align-items:stretch; }
