@@ -3,7 +3,6 @@ const TMDB_IMAGE = "https://image.tmdb.org/t/p/w500";
 const TABLE = "watched_list";
 const NO_POSTER = "https://placehold.co/300x450?text=No+Poster";
 
-
 const TMDB_GENRES = {
     28: ["Action"], 12: ["Adventure"], 16: ["Animation"], 35: ["Comedy"],
     80: ["Crime"], 18: ["Drama"], 14: ["Fantasy"], 27: ["Horror"],
@@ -16,7 +15,6 @@ function esc(str) {
         "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
     }[c]));
 }
-
 
 
 const type = document.getElementById("type");
@@ -128,7 +126,6 @@ async function searchTMDB(query) {
         return;
     }
 
-
     if (title.value.trim() !== query) return;
 
     searchResults.innerHTML = "";
@@ -165,6 +162,7 @@ async function searchTMDB(query) {
             title.value = item.title || item.name;
             type.value = detectType(item);
 
+           
             const names = [...new Set((item.genre_ids || []).flatMap(id => TMDB_GENRES[id] || []))];
             setGenres(names);
 
@@ -191,7 +189,6 @@ document.addEventListener("click", (e) => {
 });
 
 
-
 const filterBtn = document.getElementById("filterBtn");
 const filterPanel = document.getElementById("filterPanel");
 const filterDot = document.getElementById("filterDot");
@@ -216,7 +213,7 @@ sortBy.addEventListener("change", () => { updateFilterDot(); loadWatchlist(); })
 
 
 
-let activeType = "";
+let activeType = ""; 
 
 document.querySelectorAll(".category-tab").forEach(tab => {
     tab.addEventListener("click", () => {
@@ -284,7 +281,6 @@ document.getElementById("closeDetails").addEventListener("click", () => {
 document.getElementById("detailsModal").addEventListener("click", (e) => {
     if (e.target.id === "detailsModal") e.currentTarget.classList.remove("show");
 });
-
 
 
 async function loadWatchlist() {
@@ -389,6 +385,7 @@ function renderCard(item, index) {
         };
     });
 
+
     const editBtn = card.querySelector(".edit-btn");
     if (editBtn) {
         editBtn.addEventListener("click", () => {
@@ -427,6 +424,7 @@ function renderCard(item, index) {
 }
 
 
+
 async function addItem() {
 
     const name = title.value.trim();
@@ -441,7 +439,7 @@ async function addItem() {
         return;
     }
 
-
+   
     const match = selectedTMDB;
 
     if (!match) {
@@ -490,10 +488,9 @@ addBtn.addEventListener("click", addItem);
 
 
 const WATCHLIST_TITLE = "To Watch or Not to Watch 👀";   
-const WATCHLIST_BTN = "We Binged →";    
-const WATCHED_TITLE = "We Came, We Saw, We Binged🎞️";   
+const WATCHLIST_BTN = "We Binged →";   
+const WATCHED_TITLE = "We Came, We Saw, We Binged🎞️";    
 const WATCHED_BTN = "← To Watch";     
-
 
 function setHeading(text) {
     const m = text.match(/^(.*?)([\s\p{Extended_Pictographic}\uFE0F\u200D]*)$/u);
@@ -514,6 +511,69 @@ historyBtn.addEventListener("click", () => {
 
     loadWatchlist();
 });
+
+
+const EDIT_PASSCODE = "1030";
+
+const loginModal = document.getElementById("loginModal");
+const loginPassword = document.getElementById("loginPassword");
+const loginError = document.getElementById("loginError");
+
+function setEditing(on) {
+    document.body.classList.toggle("editing", on);
+    try {
+        if (on) localStorage.setItem("editMode", "1");
+        else localStorage.removeItem("editMode");
+    } catch (e) {}
+}
+
+
+try {
+    if (localStorage.getItem("editMode") === "1") document.body.classList.add("editing");
+} catch (e) {}
+
+let titleClicks = 0;
+let titleClickTimer = null;
+
+pageTitle.addEventListener("click", () => {
+    if (document.body.classList.contains("editing")) return;
+
+    titleClicks++;
+    clearTimeout(titleClickTimer);
+    titleClickTimer = setTimeout(() => { titleClicks = 0; }, 2000);
+
+    if (titleClicks >= 5) {
+        titleClicks = 0;
+        loginError.textContent = "";
+        loginModal.classList.add("show");
+        loginPassword.focus();
+    }
+});
+
+function submitLogin() {
+    if (loginPassword.value !== EDIT_PASSCODE) {
+        loginError.textContent = "Wrong passcode.";
+        loginPassword.value = "";
+        return;
+    }
+
+    loginPassword.value = "";
+    loginError.textContent = "";
+    loginModal.classList.remove("show");
+    setEditing(true);
+}
+
+document.getElementById("loginSubmit").addEventListener("click", submitLogin);
+loginPassword.addEventListener("keydown", (e) => { if (e.key === "Enter") submitLogin(); });
+document.getElementById("loginCancel").addEventListener("click", () => {
+    loginPassword.value = "";
+    loginModal.classList.remove("show");
+});
+
+document.getElementById("lockBtn").addEventListener("click", () => {
+    setEditing(false);
+});
+
 
 
 function applyTitleSearch() {
