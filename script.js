@@ -3,7 +3,7 @@ const TMDB_IMAGE = "https://image.tmdb.org/t/p/w500";
 const TABLE = "watched_list";
 const NO_POSTER = "https://placehold.co/300x450?text=No+Poster";
 
-
+// TMDB genre id -> our genre names (movie + tv ids)
 const TMDB_GENRES = {
     28: ["Action"], 12: ["Adventure"], 16: ["Animation"], 35: ["Comedy"],
     80: ["Crime"], 18: ["Drama"], 14: ["Fantasy"], 27: ["Horror"],
@@ -17,24 +17,7 @@ function esc(str) {
     }[c]));
 }
 
-
-
-function spawnConfetti(container) {
-    if (!container) return;
-    const emojis = ["✨", "🌟", "💫", "🎉"];
-    for (let i = 0; i < 8; i++) {
-        const piece = document.createElement("span");
-        piece.className = "confetti-piece";
-        piece.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-        const angle = Math.random() * Math.PI * 2;
-        const dist = 26 + Math.random() * 26;
-        piece.style.setProperty("--dx", `${Math.cos(angle) * dist}px`);
-        piece.style.setProperty("--dy", `${Math.sin(angle) * dist - 12}px`);
-        piece.style.animationDelay = `${Math.random() * 80}ms`;
-        container.appendChild(piece);
-        setTimeout(() => piece.remove(), 950);
-    }
-}
+/* ---------- Decorations ---------- */
 
 function spawnFireflies(count = 18) {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
@@ -55,7 +38,7 @@ function spawnFireflies(count = 18) {
 }
 spawnFireflies();
 
-
+/* ---------- Elements & state ---------- */
 
 const type = document.getElementById("type");
 const title = document.getElementById("title");
@@ -72,11 +55,11 @@ const searchResults = document.getElementById("searchResults");
 const seasonField = season.parentElement;
 const episodeField = episode.parentElement;
 
-let showingWatchlist = true; 
+let showingWatchlist = true; // true = Watchlist page (opens first), false = Watched page
 let selectedTMDB = null;
 let searchTimeout = null;
 
-
+/* ---------- Genre multi-select ---------- */
 
 const genreBtn = document.getElementById("genreBtn");
 const genreBtnLabel = document.getElementById("genreBtnLabel");
@@ -127,7 +110,7 @@ function renderGenreBadges(genreString) {
         .join("");
 }
 
-
+/* ---------- Type / season / episode ---------- */
 
 function updateFields() {
     const show = type.value !== "Movie";
@@ -137,7 +120,7 @@ function updateFields() {
 type.addEventListener("change", updateFields);
 updateFields();
 
-
+/* ---------- TMDB search (pick from dropdown) ---------- */
 
 function detectType(item) {
     if (item.media_type === "movie") return "Movie";
@@ -166,7 +149,7 @@ async function searchTMDB(query) {
         return;
     }
 
- 
+    // Ignore stale responses if the user kept typing
     if (title.value.trim() !== query) return;
 
     searchResults.innerHTML = "";
@@ -203,7 +186,7 @@ async function searchTMDB(query) {
             title.value = item.title || item.name;
             type.value = detectType(item);
 
-           
+            // Pre-fill genres from TMDB so picking is all that's needed
             const names = [...new Set((item.genre_ids || []).flatMap(id => TMDB_GENRES[id] || []))];
             setGenres(names);
 
@@ -229,7 +212,7 @@ document.addEventListener("click", (e) => {
     }
 });
 
-
+/* ---------- Filter / sort popup ---------- */
 
 const filterBtn = document.getElementById("filterBtn");
 const filterPanel = document.getElementById("filterPanel");
@@ -253,9 +236,9 @@ function updateFilterDot() {
 filterGenre.addEventListener("change", () => { updateFilterDot(); loadWatchlist(); });
 sortBy.addEventListener("change", () => { updateFilterDot(); loadWatchlist(); });
 
+/* ---------- Category tabs ---------- */
 
-
-let activeType = ""; 
+let activeType = ""; // "" = All, "Movie", or "Show" (Series + Anime)
 
 document.querySelectorAll(".category-tab").forEach(tab => {
     tab.addEventListener("click", () => {
@@ -267,7 +250,7 @@ document.querySelectorAll(".category-tab").forEach(tab => {
     });
 });
 
-
+/* ---------- Details modal ---------- */
 
 async function openDetailsModal(item) {
 
@@ -324,7 +307,7 @@ document.getElementById("detailsModal").addEventListener("click", (e) => {
     if (e.target.id === "detailsModal") e.currentTarget.classList.remove("show");
 });
 
-
+/* ---------- Load & render ---------- */
 
 async function loadWatchlist() {
 
@@ -340,7 +323,7 @@ async function loadWatchlist() {
     if (activeType === "Movie") {
         query = query.eq("type", "Movie");
     } else if (activeType === "Show") {
-        query = query.in("type", ["Series", "Anime"]); 
+        query = query.in("type", ["Series", "Anime"]); // anime counts as shows
     }
 
     if (sortBy.value === "title") {
@@ -399,7 +382,7 @@ function renderCard(item, index) {
 </div>
 `;
 
-  
+    // Toggle watched <-> watchlist
     const checkbox = card.querySelector(".completedCheck");
     checkbox.addEventListener("change", async function () {
 
@@ -408,13 +391,10 @@ function renderCard(item, index) {
             .update({ watched: this.checked })
             .eq("id", item.id);
 
-        if (this.checked) spawnConfetti(this.closest(".complete"));
-
-        card.classList.add("completing");
-        setTimeout(loadWatchlist, 500);
+        loadWatchlist();
     });
 
-
+    // Delete
     card.querySelector(".delete-btn").addEventListener("click", () => {
 
         const modal = document.getElementById("deleteModal");
@@ -431,7 +411,7 @@ function renderCard(item, index) {
         };
     });
 
-
+    // Edit season/episode (series & anime only)
     const editBtn = card.querySelector(".edit-btn");
     if (editBtn) {
         editBtn.addEventListener("click", () => {
@@ -460,7 +440,7 @@ function renderCard(item, index) {
         });
     }
 
-
+    // Open details
     [card.querySelector(".poster"), card.querySelector("h3")].forEach(el => {
         el.style.cursor = "pointer";
         el.addEventListener("click", () => openDetailsModal(item));
@@ -469,7 +449,7 @@ function renderCard(item, index) {
     return card;
 }
 
-
+/* ---------- Add ---------- */
 
 async function addItem() {
 
@@ -485,7 +465,8 @@ async function addItem() {
         return;
     }
 
-   
+    // Never guess a match: if nothing was picked from the dropdown, ask first
+    // so the wrong poster/details can't get saved by accident.
     const match = selectedTMDB;
 
     if (!match) {
@@ -506,7 +487,7 @@ async function addItem() {
         type: type.value,
         season: isMovie ? null : Number(season.value),
         episode: isMovie ? null : Number(episode.value),
-        watched: !showingWatchlist, 
+        watched: !showingWatchlist, // added on the Watched page = already watched
         tmdb_id: match ? match.id : null,
         tmdb_type: match ? match.media_type : null,
         poster: match && match.poster_path ? `${TMDB_IMAGE}${match.poster_path}` : null,
@@ -532,13 +513,17 @@ async function addItem() {
 
 addBtn.addEventListener("click", addItem);
 
+/* ---------- Page toggle ---------- */
 
-const WATCHLIST_TITLE = "To Watch or Not to Watch 👀";   
-const WATCHLIST_BTN = "We Came, We Saw, We Binged🎞️";    
-const WATCHED_TITLE = "We Came, We Saw, We Binged🎞️";   
-const WATCHED_BTN = "← To Watch or Not to Watch 👀";     
+// Wording for both pages. Change the text inside the quotes to rename things.
+// Watchlist page = opens first. Watched page = where the button takes you.
+const WATCHLIST_TITLE = "To Watch or Not to Watch 👀";   // heading on the Watchlist page
+const WATCHLIST_BTN = "We Binged →";    // button on the Watchlist page
+const WATCHED_TITLE = "We Came, We Saw, We Binged🎞️";    // heading on the Watched page
+const WATCHED_BTN = "← To Watch";      // button on the Watched page
 
-
+// Puts the gradient on the words only; trailing emojis stay outside it
+// so they keep their real colours.
 function setHeading(text) {
     const m = text.match(/^(.*?)([\s\p{Extended_Pictographic}\uFE0F\u200D]*)$/u);
     pageTitle.innerHTML = `<span class="grad">${esc(m[1])}</span>${esc(m[2])}`;
@@ -556,6 +541,7 @@ historyBtn.addEventListener("click", () => {
     loadWatchlist();
 });
 
+/* ---------- Title search box ---------- */
 
 function applyTitleSearch() {
     const filter = search.value.toLowerCase();
