@@ -2,8 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sihan MooShow</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">    <title>Sihan MooShow</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -58,6 +57,7 @@
                 <input id="episode" type="number" min="1" step="1" value="1" inputmode="numeric">
             </div>
             <button id="addBtn">+ Add</button>
+            <button id="lockBtn" class="secondary-btn" type="button">Lock</button>
         </div>
         <div class="search-row">
             <input id="search" type="text" placeholder="🔍 Search titles...">
@@ -101,7 +101,7 @@
                 <button type="button" class="category-tab" data-type="Movie">Movies</button>
                 <button type="button" class="category-tab" data-type="Show">Shows</button>
             </div>
-            <button id="historyBtn" class="history-btn" type="button">We Binged→</button>
+            <button id="historyBtn" class="history-btn" type="button">We Binged →</button>
         </div>
     </div>
     <div id="watchlist" class="grid"></div>
@@ -148,6 +148,21 @@
             <div class="badges" id="detailsBadges"></div>
             <p id="detailsMeta" class="details-meta"></p>
             <p id="detailsOverview"></p>
+        </div>
+    </div>
+</div>
+
+<div id="loginModal" class="modal">
+    <div class="modal-content">
+        <h2>Edit mode</h2>
+        <p>Enter the passcode</p>
+        <div class="field">
+            <input id="loginPassword" type="password" inputmode="numeric" autocomplete="off" placeholder="Passcode">
+        </div>
+        <div id="loginError" class="login-error"></div>
+        <div class="modal-buttons">
+            <button id="loginCancel" class="secondary-btn" type="button">Cancel</button>
+            <button id="loginSubmit" type="button">Unlock</button>
         </div>
     </div>
 </div>
