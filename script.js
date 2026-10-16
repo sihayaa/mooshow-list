@@ -56,6 +56,7 @@ function spawnFireflies(count = 18) {
 spawnFireflies();
 
 
+
 const type = document.getElementById("type");
 const title = document.getElementById("title");
 const season = document.getElementById("season");
@@ -71,7 +72,7 @@ const searchResults = document.getElementById("searchResults");
 const seasonField = season.parentElement;
 const episodeField = episode.parentElement;
 
-let showingWatchlist = false; 
+let showingWatchlist = true; 
 let selectedTMDB = null;
 let searchTimeout = null;
 
@@ -202,7 +203,7 @@ async function searchTMDB(query) {
             title.value = item.title || item.name;
             type.value = detectType(item);
 
-            
+           
             const names = [...new Set((item.genre_ids || []).flatMap(id => TMDB_GENRES[id] || []))];
             setGenres(names);
 
@@ -251,6 +252,7 @@ function updateFilterDot() {
 
 filterGenre.addEventListener("change", () => { updateFilterDot(); loadWatchlist(); });
 sortBy.addEventListener("change", () => { updateFilterDot(); loadWatchlist(); });
+
 
 
 let activeType = ""; 
@@ -338,7 +340,7 @@ async function loadWatchlist() {
     if (activeType === "Movie") {
         query = query.eq("type", "Movie");
     } else if (activeType === "Show") {
-        query = query.in("type", ["Series", "Anime"]);
+        query = query.in("type", ["Series", "Anime"]); 
     }
 
     if (sortBy.value === "title") {
@@ -397,7 +399,7 @@ function renderCard(item, index) {
 </div>
 `;
 
-
+  
     const checkbox = card.querySelector(".completedCheck");
     checkbox.addEventListener("change", async function () {
 
@@ -411,6 +413,7 @@ function renderCard(item, index) {
         card.classList.add("completing");
         setTimeout(loadWatchlist, 500);
     });
+
 
     card.querySelector(".delete-btn").addEventListener("click", () => {
 
@@ -427,6 +430,7 @@ function renderCard(item, index) {
             loadWatchlist();
         };
     });
+
 
     const editBtn = card.querySelector(".edit-btn");
     if (editBtn) {
@@ -455,6 +459,7 @@ function renderCard(item, index) {
             };
         });
     }
+
 
     [card.querySelector(".poster"), card.querySelector("h3")].forEach(el => {
         el.style.cursor = "pointer";
@@ -528,16 +533,18 @@ async function addItem() {
 addBtn.addEventListener("click", addItem);
 
 
-const WATCHED_TITLE = pageTitle.textContent;
-const WATCHED_BTN = historyBtn.textContent;
-const WATCHLIST_TITLE = "To Watch or Not to Watch 👀";
-const WATCHLIST_BTN = "← Back to Binged 🎞️";
+const WATCHLIST_TITLE = "To Watch or Not to Watch 👀";   
+const WATCHLIST_BTN = "We Came, We Saw, We Binged🎞️";    
+const WATCHED_TITLE = "We Came, We Saw, We Binged🎞️";   
+const WATCHED_BTN = "← To Watch or Not to Watch 👀";     
+
 
 function setHeading(text) {
     const m = text.match(/^(.*?)([\s\p{Extended_Pictographic}\uFE0F\u200D]*)$/u);
     pageTitle.innerHTML = `<span class="grad">${esc(m[1])}</span>${esc(m[2])}`;
 }
-setHeading(WATCHED_TITLE);
+setHeading(WATCHLIST_TITLE);
+historyBtn.textContent = WATCHLIST_BTN;
 
 historyBtn.addEventListener("click", () => {
 
